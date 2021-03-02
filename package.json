@@ -1,0 +1,35 @@
+{
+  "name": "rex-jwt-client",
+  "version": "1.0.29",
+  "description": "Corresponding front end for rex-jwt-middleware.",
+  "main": "./build/index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Isaac-Svi/rex-jwt-client.git"
+  },
+  "author": "Isaac Svi",
+  "license": "ISC",
+  "dependencies": {},
+  "peerDependencies": {
+    "jwt-decode": "^3.1.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.16",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.21.2",
+    "webpack-cli": "^4.5.0",
+    "jwt-decode": "^3.1.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
+  }
+}
