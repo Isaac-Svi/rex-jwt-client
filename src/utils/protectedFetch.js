@@ -42,10 +42,10 @@ const protectedFetch = async ({
     res = await fetch(route, params)
     data = await parseToType(res, responseType)
 
-    return { ...data }
+    return { data, error: '' }
   } catch (err) {
     console.log(err.message)
-    return { error: err.message }
+    return { data: '', error: err.message }
   }
 }
 
