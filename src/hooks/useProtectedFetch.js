@@ -1,31 +1,16 @@
 import { useState, useEffect, useContext } from 'react'
-import jwtDecode from 'jwt-decode'
 import AuthProvider from '../providers/AuthProvider'
-
-const isExp = (token) => {
-  return jwtDecode(token).exp * 1000 < Date.now() ? true : false
-}
-
-const convert = (res, type) => {
-  switch (type.toLowerCase()) {
-    case 'text':
-      return res.text()
-    case 'json':
-      return res.json()
-    default:
-      throw new Error('Invalid responseType')
-  }
-}
+import isExp from '../utils/isExp'
+import parseToType from '../utils/parseToType'
 
 const useProtectedFetch = ({
+  route,
   method,
   headers = {},
   body = {},
   responseType = 'json',
 }) => {
-  const { accessToken, setRefresh, refreshRoute } = useContext(
-    AuthProvider.contextType
-  )
+  const { accessToken, setRefresh } = useContext(AuthProvider.contextType)
 
   const [data, setData] = useState('')
   const [loading, setLoading] = useState(true)
@@ -46,8 +31,8 @@ const useProtectedFetch = ({
         params['body'] = body
       }
 
-      fetch(refreshRoute, params)
-        .then((res) => convert(res, responseType))
+      fetch(route, params)
+        .then((res) => parseToType(res, responseType))
         .then((x) => {
           if (x.error) throw new Error(x.error)
           setData(x)
