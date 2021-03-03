@@ -1,6 +1,6 @@
 {
   "name": "rex-jwt-client",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "description": "Corresponding front end for rex-jwt-middleware.",
   "main": "./build/index.js",
   "scripts": {
