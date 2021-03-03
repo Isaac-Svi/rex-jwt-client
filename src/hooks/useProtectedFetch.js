@@ -21,6 +21,7 @@ const useProtectedFetch = ({
   if (watch === null || watch === undefined) watchedStates.push(watch)
 
   useEffect(() => {
+    console.log('called')
     if (isExp(accessToken)) {
       setRefresh(true)
     } else {
