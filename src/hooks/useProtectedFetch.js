@@ -9,7 +9,7 @@ const useProtectedFetch = ({
   headers = {},
   body = {},
   responseType = 'json',
-  watch = null, // state to watch, so that hook is rerun.
+  watch,
 }) => {
   const { accessToken, setRefresh } = useContext(AuthProvider.contextType)
 
@@ -17,11 +17,12 @@ const useProtectedFetch = ({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const watchedStates = [accessToken]
-  if (!(watch === null || watch === undefined)) watchedStates.push(watch)
+  const watchedStates = [accessToken, ...watch]
+  // watch.forEach((state) => {
+  //   if (!(state === null || state === undefined)) watchedStates.push(state)
+  // })
 
   useEffect(() => {
-    console.log('called', watchedStates)
     if (isExp(accessToken)) {
       setRefresh(true)
     } else {
@@ -44,7 +45,6 @@ const useProtectedFetch = ({
           setLoading(false)
         })
         .catch((err) => {
-          console.log(err.message)
           setError(err.message)
           setLoading(false)
         })
