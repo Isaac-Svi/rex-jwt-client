@@ -18,9 +18,6 @@ const useProtectedFetch = ({
   const [error, setError] = useState(null)
 
   const watchedStates = [accessToken, ...watch]
-  // watch.forEach((state) => {
-  //   if (!(state === null || state === undefined)) watchedStates.push(state)
-  // })
 
   useEffect(() => {
     if (isExp(accessToken)) {
