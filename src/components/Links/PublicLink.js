@@ -24,7 +24,7 @@ class PublicLink extends Component {
     return (
       <context.Consumer>
         {({ accessToken, loading }) => {
-          return !accessToken && !loading ? <Link to={to}>{children}</Link> : <></>
+          return !accessToken && !loading ? <Link to={props.to}>{props.children}</Link> : <></>
         }}
       </context.Consumer>
     )
