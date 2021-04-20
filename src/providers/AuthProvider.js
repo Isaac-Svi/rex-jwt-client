@@ -58,15 +58,14 @@ export default class AuthProvider extends Component {
       })
       const data = await res.json()
 
+      if (data.error) throw new Error(data.error)
+
       const { accessToken, userInfo } = data
 
       this.setState({ accessToken, userInfo })
-
-      return true // to show success
     } catch (err) {
       console.log(err.message)
       this.setState({ accessToken: '', userInfo: {} })
-      return false // show what went wrong
     }
   }
 
