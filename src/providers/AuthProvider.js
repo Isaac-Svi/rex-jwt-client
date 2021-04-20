@@ -54,7 +54,7 @@ export default class AuthProvider extends Component {
       const res = await fetch(loginRoute, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${this.state.accessToken}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       })
