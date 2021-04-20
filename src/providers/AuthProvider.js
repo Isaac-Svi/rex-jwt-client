@@ -34,7 +34,7 @@ export default class AuthProvider extends Component {
   refreshToken() {
     this.setState({ refresh: false })
 
-    fetch(this.state.refreshRoute, {
+    fetch(this.value.refreshRoute, {
       method: 'POST',
       credentials: 'include',
     })
