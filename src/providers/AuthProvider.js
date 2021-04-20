@@ -2,13 +2,13 @@ import React, { Component, createContext } from 'react'
 
 const AuthContext = createContext(null)
 
+// TODO: Make login function and logout function
+
 export default class AuthProvider extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loader: this.props.loader,
-      refreshRoute: this.props.refreshRoute,
       userInfo: {},
       accessToken: '',
       loading: true,
@@ -16,6 +16,14 @@ export default class AuthProvider extends Component {
       setAccessToken: (accessToken) => this.setState({ accessToken }),
       setRefresh: (refresh) => this.setState({ refresh }),
       setUserInfo: (userInfo) => this.setState({ userInfo }),
+    }
+
+    this.value = {
+      ...this.state,
+      loader: this.props.loader,
+      refreshRoute: this.props.refreshRoute,
+      loginEmailAndPassword: this.loginEmailAndPassword,
+      logoutEmailAndPassword: this.logoutEmailAndPassword,
     }
   }
 
@@ -45,6 +53,42 @@ export default class AuthProvider extends Component {
       })
   }
 
+  async loginEmailAndPassword(loginRoute, email, password) {
+    this.setState({ loading: true })
+    try {
+      const res = await fetch(loginRoute, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+
+      const { accessToken, userInfo } = data
+
+      this.setState({ accessToken, userInfo, loading: false })
+    } catch (err) {
+      console.log(err.message)
+      this.setState({ accessToken: '', userInfo: {}, loading: false })
+    }
+  }
+
+  async logoutEmailAndPassword(logoutRoute) {
+    this.setState({ loading: true })
+    try {
+      await fetch(logoutRoute, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.state.accessToken}`,
+        },
+      })
+      this.refreshToken()
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
   componentDidMount() {
     if (this.state.refresh) this.refreshToken()
   }
@@ -55,9 +99,7 @@ export default class AuthProvider extends Component {
 
   render() {
     return (
-      <AuthContext.Provider value={this.state}>
-        {this.props.children}
-      </AuthContext.Provider>
+      <AuthContext.Provider value={this.value}>{this.props.children}</AuthContext.Provider>
     )
   }
 }
