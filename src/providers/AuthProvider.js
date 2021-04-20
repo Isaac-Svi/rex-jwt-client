@@ -2,8 +2,6 @@ import React, { Component, createContext } from 'react'
 
 const AuthContext = createContext(null)
 
-// TODO: Make login function and logout function
-
 export default class AuthProvider extends Component {
   constructor(props) {
     super(props)
@@ -16,14 +14,6 @@ export default class AuthProvider extends Component {
       setAccessToken: (accessToken) => this.setState({ accessToken }),
       setRefresh: (refresh) => this.setState({ refresh }),
       setUserInfo: (userInfo) => this.setState({ userInfo }),
-      // loader: this.props.loader,
-      // refreshRoute: this.props.refreshRoute,
-      // loginEmailAndPassword: this.loginEmailAndPassword.bind(this),
-      // logoutEmailAndPassword: this.logoutEmailAndPassword.bind(this),
-    }
-
-    this.value = {
-      ...this.state,
       loader: this.props.loader,
       refreshRoute: this.props.refreshRoute,
       loginEmailAndPassword: this.loginEmailAndPassword.bind(this),
@@ -34,7 +24,7 @@ export default class AuthProvider extends Component {
   refreshToken() {
     this.setState({ refresh: false })
 
-    fetch(this.value.refreshRoute, {
+    fetch(this.state.refreshRoute, {
       method: 'POST',
       credentials: 'include',
     })
@@ -101,7 +91,7 @@ export default class AuthProvider extends Component {
 
   render() {
     return (
-      <AuthContext.Provider value={this.value}>{this.props.children}</AuthContext.Provider>
+      <AuthContext.Provider value={this.state}>{this.props.children}</AuthContext.Provider>
     )
   }
 }
