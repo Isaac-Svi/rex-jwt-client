@@ -16,10 +16,6 @@ export default class AuthProvider extends Component {
       setAccessToken: (accessToken) => this.setState({ accessToken }),
       setRefresh: (refresh) => this.setState({ refresh }),
       setUserInfo: (userInfo) => this.setState({ userInfo }),
-    }
-
-    this.value = {
-      ...this.state,
       loader: this.props.loader,
       refreshRoute: this.props.refreshRoute,
       loginEmailAndPassword: this.loginEmailAndPassword,
@@ -54,7 +50,6 @@ export default class AuthProvider extends Component {
   }
 
   async loginEmailAndPassword(loginRoute, email, password) {
-    this.setState({ loading: true })
     try {
       const res = await fetch(loginRoute, {
         method: 'POST',
@@ -67,15 +62,14 @@ export default class AuthProvider extends Component {
 
       const { accessToken, userInfo } = data
 
-      this.setState({ accessToken, userInfo, loading: false })
+      this.setState({ accessToken, userInfo })
     } catch (err) {
       console.log(err.message)
-      this.setState({ accessToken: '', userInfo: {}, loading: false })
+      this.setState({ accessToken: '', userInfo: {} })
     }
   }
 
   async logoutEmailAndPassword(logoutRoute) {
-    this.setState({ loading: true })
     try {
       await fetch(logoutRoute, {
         method: 'POST',
@@ -99,7 +93,7 @@ export default class AuthProvider extends Component {
 
   render() {
     return (
-      <AuthContext.Provider value={this.value}>{this.props.children}</AuthContext.Provider>
+      <AuthContext.Provider value={this.state}>{this.props.children}</AuthContext.Provider>
     )
   }
 }
