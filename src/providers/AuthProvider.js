@@ -18,6 +18,7 @@ export default class AuthProvider extends Component {
       refreshRoute: this.props.refreshRoute,
       loginEmailAndPassword: this.loginEmailAndPassword.bind(this),
       logoutEmailAndPassword: this.logoutEmailAndPassword.bind(this),
+      register: this.register.bind(this),
     }
   }
 
@@ -45,6 +46,21 @@ export default class AuthProvider extends Component {
           loading: false,
         })
       })
+  }
+
+  async register(registerRoute, newUserObject) {
+    const res = await fetch(registerRoute, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUserObject),
+    })
+    const data = await res.json()
+
+    if (data.error) throw new Error(data.error)
+
+    console.log(data.msg)
   }
 
   async loginEmailAndPassword(loginRoute, email, password) {
