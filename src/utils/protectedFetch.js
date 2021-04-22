@@ -3,15 +3,16 @@ import AuthProvider from '../providers/AuthProvider'
 import isExp from './isExp'
 import parseToType from './parseToType'
 
+const { setRefresh } = useContext(AuthProvider.contextType)
+
 const protectedFetch = async ({
+  accessToken,
   body = {},
   headers = {},
   method,
   route,
   responseType = 'json',
 }) => {
-  const { setRefresh, accessToken } = useContext(AuthProvider.contextType)
-
   try {
     if (isExp(accessToken)) {
       setRefresh()
