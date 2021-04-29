@@ -14,7 +14,9 @@ class PrivateLink extends Component {
       <context.Consumer>
         {({ accessToken, loading }) => {
           return accessToken && !loading ? (
-            <Link to={this.props.to}>{this.props.children}</Link>
+            <Link to={this.props.to} {...this.props}>
+              {this.props.children}
+            </Link>
           ) : (
             <></>
           )
