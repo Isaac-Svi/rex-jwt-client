@@ -60,43 +60,37 @@ export default class AuthProvider extends Component {
 
     if (data.error) throw new Error(data.error)
 
-    console.log(data.msg)
+    return data.msg
   }
 
   async loginEmailAndPassword(loginRoute, email, password) {
-    try {
-      const res = await fetch(loginRoute, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      })
-      const data = await res.json()
+    const res = await fetch(loginRoute, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
+    const data = await res.json()
 
-      if (data.error) throw new Error(data.error)
-
-      const { accessToken, userInfo } = data
-
-      this.setState({ accessToken, userInfo })
-    } catch (err) {
-      console.log(err.message)
+    if (data.error) {
       this.setState({ accessToken: '', userInfo: {} })
+      throw new Error(data.error)
     }
+
+    const { accessToken, userInfo } = data
+
+    this.setState({ accessToken, userInfo })
   }
 
   async logoutEmailAndPassword(logoutRoute) {
-    try {
-      await fetch(logoutRoute, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${this.state.accessToken}`,
-        },
-      })
-      this.refreshToken()
-    } catch (err) {
-      console.log(err.message)
-    }
+    await fetch(logoutRoute, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.state.accessToken}`,
+      },
+    })
+    this.refreshToken()
   }
 
   componentDidMount() {
