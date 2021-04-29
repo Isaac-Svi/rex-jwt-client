@@ -6,7 +6,6 @@ const protectedFetch = async ({
   body = {},
   headers = {},
   method,
-  refreshMethod,
   route,
   refreshRoute,
   responseType = 'json',
@@ -16,7 +15,7 @@ const protectedFetch = async ({
 
     if (isExp(token)) {
       res = await fetch(refreshRoute, {
-        method: refreshMethod,
+        method: 'POST',
         headers: {
           credentials: 'include',
         },
