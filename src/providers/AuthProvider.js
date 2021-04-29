@@ -13,7 +13,7 @@ export default class AuthProvider extends Component {
       refresh: true,
       setAccessToken: (accessToken) => this.setState({ accessToken }),
       setRefresh: (refresh) => this.setState({ refresh }),
-      setUserInfo: (userInfo) => this.setState({ userInfo }),
+      setUserInfo: (userInfo) => this.setState({ ...userInfo }),
       loader: this.props.loader,
       refreshRoute: this.props.refreshRoute,
       loginEmailAndPassword: this.loginEmailAndPassword.bind(this),
