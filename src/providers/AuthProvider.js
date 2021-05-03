@@ -11,15 +11,19 @@ export default class AuthProvider extends Component {
       accessToken: '',
       loading: true,
       refresh: true,
+
+      // TODO: mention how these setState functions are different than regular React setState functions
       setAccessToken: (accessToken) => this.setState({ accessToken }),
       setRefresh: (refresh) => this.setState({ refresh }),
       setUserInfo: (newUserInfo) =>
         this.setState({ userInfo: { ...this.state.userInfo, ...newUserInfo } }),
+
       loader: this.props.loader,
       refreshRoute: this.props.refreshRoute,
       loginEmailAndPassword: this.loginEmailAndPassword.bind(this),
       logoutEmailAndPassword: this.logoutEmailAndPassword.bind(this),
       register: this.register.bind(this),
+      registerAndLogin: this.registerAndLogin.bind(this),
     }
   }
 
@@ -52,9 +56,7 @@ export default class AuthProvider extends Component {
   async register(registerRoute, newUserObject) {
     const res = await fetch(registerRoute, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newUserObject),
     })
     const data = await res.json()
@@ -64,12 +66,25 @@ export default class AuthProvider extends Component {
     return data.msg
   }
 
+  async registerAndLogin(route, newUserObject) {
+    const res = await fetch(route, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newUserObject),
+    })
+    const data = await res.json()
+
+    if (data.error) throw new Error(data.error)
+
+    const { accessToken, userInfo } = data
+
+    this.setState({ accessToken, userInfo })
+  }
+
   async loginEmailAndPassword(loginRoute, email, password) {
     const res = await fetch(loginRoute, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     })
     const data = await res.json()
@@ -87,9 +102,7 @@ export default class AuthProvider extends Component {
   async logoutEmailAndPassword(logoutRoute) {
     await fetch(logoutRoute, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${this.state.accessToken}`,
-      },
+      headers: { Authorization: `Bearer ${this.state.accessToken}` },
     })
     this.refreshToken()
   }
